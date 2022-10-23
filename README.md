@@ -24,3 +24,11 @@ formal languages, automata, concepts of programming languages
   - Operational Semantics
   - Denotational Semantics
   - Axiomatic Semantics
+
+<br>
+<br>
+
+- [Lexical Analysis](https://github.com/jimin-kiim/Programming-Language/issues/3#issuecomment-1282311621)
+- [Syntax Analysis(Parsing)](https://github.com/jimin-kiim/Programming-Language/issues/3#issuecomment-1282394172)
+- [Top down parser - Recursive Descent Parsing](https://github.com/jimin-kiim/Programming-Language/issues/3#issuecomment-1282394307)
+- [Bottom up parser - LR Parsing](https://github.com/jimin-kiim/Programming-Language/issues/3#issuecomment-1282394469)
