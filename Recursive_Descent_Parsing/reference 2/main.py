@@ -171,7 +171,7 @@ def check_validity(string, start, table):
         
 def main():
     productions = {}
-    grammar = open("grammar.txt", "r")
+    grammar = open("grammar4.txt", "r")
     
     first = {}
     follow = {}
@@ -180,15 +180,13 @@ def main():
     start = ""
     
     for prod in grammar:
-        l = re.split(" |\n", prod)
-        # print(l)
+        l = re.split("( /->/\n/)*", prod)
         m = []
         for i in l:
-            if (i == "" or i == None or i == '\n' or i == " " or i == "→" or i == "_"):
+            if (i == "" or i == None or i == '\n' or i == " " or i == "-" or i == ">"):
                 pass
             else:
                 m.append(i)
-        print(m)
         left_prod = m.pop(0)
         right_prod = []
         t = []
@@ -211,28 +209,28 @@ def main():
         print(lhs, ":" , rhs)
     print("")
     
-    # for s in productions.keys():
-        # first[s] = cal_first(s, productions)
+    for s in productions.keys():
+        first[s] = cal_first(s, productions)
     
-    # print("*****FIRST*****")
-    # for lhs, rhs in first.items():
-    #     print(lhs, ":" , rhs)
+    print("*****FIRST*****")
+    for lhs, rhs in first.items():
+        print(lhs, ":" , rhs)
     
-    # print("")
+    print("")
     
-    # for lhs in productions:
-    #     follow[lhs] = set()
+    for lhs in productions:
+        follow[lhs] = set()
     
-    # for s in productions.keys():
-    #     follow[s] = cal_follow(s, productions, first)
+    for s in productions.keys():
+        follow[s] = cal_follow(s, productions, first)
     
-    # print("*****FOLLOW*****")
-    # for lhs, rhs in follow.items():
-    #     print(lhs, ":" , rhs)
+    print("*****FOLLOW*****")
+    for lhs, rhs in follow.items():
+        print(lhs, ":" , rhs)
     
-    # table = parsing_table(productions, first, follow)
-    # string = input("Enter a string to check its valididty : ")
-    # check_validity(string, start, table)
+    table = parsing_table(productions, first, follow)
+    string = input("Enter a string to check its valididty : ")
+    check_validity(string, start, table)
     grammar.close()
 
 if __name__ == "__main__":
