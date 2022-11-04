@@ -124,16 +124,17 @@ def parsing_table(productions, first, follow):
 def check_validity(string, start, table):
     
     accepted = True
-    splited_string = re.split(" |\n", string)
+    splitted_string = re.split(" |\n", string)
     # print(splited_string)
-    m = []
-    for i in splited_string:
+    input_string = []
+    for i in splitted_string:
         if (i == "" or i == None or i == '\n' or i == " " or i == "→" or i == "_"):
             pass
         else:
-            m.append(i)
-    print(m)
-    input_string = m.append('$')
+            input_string.append(i)
+    # print(m)
+    input_string.append('$')
+    print(input_string)
     stack = []
     
     stack.append('$')
