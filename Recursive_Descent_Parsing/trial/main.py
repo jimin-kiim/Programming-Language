@@ -157,16 +157,16 @@ def check_validity(string, start, table):
             input_string.append(i)
     # print(m)
     input_string.append('$')
-    print(input_string)
+    # print(input_string)
     stack = []
-    
+    # print('start',start)
     stack.append('$')
     stack.append(start)
-    
+    # print('stack',stack)
     idx = 0
     print("Stack\t\tInput\t\tMoves") 
     while (len(stack) > 0):
-        
+        # print("stack",stack)
         top = stack[-1]
         print(f"Top => {top}")
         
@@ -185,15 +185,26 @@ def check_validity(string, start, table):
                 break
             
             value = table[key]
+            # print("value above if : ",value)
+            value = re.split("(<.*?>)",value)
+            m = []
+            for i in value:
+                if (i == "" or i == None or i == '\n' or i == " " or i == "→" or i == "_"):
+                    pass
+                else:
+                    m.append(i)
+            value = m
+            # print("value after re.split : ",value)
             if value != 'ε':
                 value = value[::-1]
                 value = list(value)
-                
+                # print("stack below list(value)",stack)
                 stack.pop()
-                
+                # print("stack after pop",stack)
+                print(value)
                 for ele in value:
                     stack.append(ele)
-            
+                print("stack in if",stack)
             else:
                 stack.pop()
     
@@ -236,7 +247,7 @@ def main():
         
         if(start == ""):
             start = left_prod
-      
+    
     print("*****GRAMMAR*****")    
     for lhs, rhs in productions.items():
         print(lhs, ":" , rhs)
