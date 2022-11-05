@@ -125,12 +125,35 @@ def check_validity(string, start, table):
     
     accepted = True
     splitted_string = re.split(" |\n", string)
-    # print(splited_string)
+    # print(splitted_string)
     input_string = []
     for i in splitted_string:
         if (i == "" or i == None or i == '\n' or i == " " or i == "→" or i == "_"):
             pass
+        elif (i.isdigit()):
+            i = i.replace(i,"<const>")
+            # print(i)
+            input_string.append(i)
+        elif (i == ":="):
+            i = i.replace(i,"<assignment_op>")
+            input_string.append(i)
+        elif (i == ";"):
+            i = i.replace(i,"<semi_colon>")
+            input_string.append(i)
+        elif (i == "+" or i == '-'):
+            i = i.replace(i,"<add_op>")
+            input_string.append(i)
+        elif (i == "*" or i == "/"):
+            i = i.replace(i,"<mult_op>")
+            input_string.append(i)
+        elif (i == "("):
+            i = i.replace(i,"<left_paren>")
+            input_string.append(i)
+        elif (i == ")"):
+            i = i.replace(i,"<right_paren>")
+            input_string.append(i)
         else:
+            i = i.replace(i,"<ident>")
             input_string.append(i)
     # print(m)
     input_string.append('$')
