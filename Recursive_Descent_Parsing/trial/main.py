@@ -120,20 +120,19 @@ def parsing_table(productions, first, follow):
     
     return table
 
-
-def check_validity(string, start, table):
-    
-    accepted = True
-    splitted_string = re.split(" |\n", string)
-    # print(splitted_string)
+def counting_terminal(statement):
+    number_of_id = 0
+    number_of_const = 0
+    number_of_op = 0
     input_string = []
-    for i in splitted_string:
+    splitted_statement = re.split(" ", statement)
+    for i in splitted_statement:
         if (i == "" or i == None or i == '\n' or i == " " or i == "→" or i == "_"):
             pass
         elif (i.isdigit()):
             i = i.replace(i,"<const>")
-            # print(i)
             input_string.append(i)
+            number_of_const += 1
         elif (i == ":="):
             i = i.replace(i,"<assignment_op>")
             input_string.append(i)
@@ -143,9 +142,11 @@ def check_validity(string, start, table):
         elif (i == "+" or i == '-'):
             i = i.replace(i,"<add_op>")
             input_string.append(i)
+            number_of_op += 1
         elif (i == "*" or i == "/"):
             i = i.replace(i,"<mult_op>")
             input_string.append(i)
+            number_of_op += 1
         elif (i == "("):
             i = i.replace(i,"<left_paren>")
             input_string.append(i)
@@ -155,18 +156,29 @@ def check_validity(string, start, table):
         else:
             i = i.replace(i,"<ident>")
             input_string.append(i)
-    # print(m)
+            number_of_id += 1
+    print(statement)
+    print(f"ID: {number_of_id}; CONST: {number_of_const}; OP: {number_of_op};")
+    return input_string
+
+def check_validity(string, start, table):
+    
+    accepted = True
+    # print("string : ",string)
+    statements = re.split("\n", string)
+    # splitted_string = re.split(" |\n", string)
+    # splitted_string = re.split(" ", string)
+    # print("splitted string : ",statements)
+    input_string = []
+    for statement in statements:
+        input_string += counting_terminal(statement)
     input_string.append('$')
-    # print(input_string)
     stack = []
-    # print('start',start)
     stack.append('$')
     stack.append(start)
-    # print('stack',stack)
     idx = 0
     print("Stack\t\tInput\t\tMoves") 
     while (len(stack) > 0):
-        # print("stack",stack)
         top = stack[-1]
         print(f"Top => {top}")
         
@@ -185,7 +197,6 @@ def check_validity(string, start, table):
                 break
             
             value = table[key]
-            # print("value above if : ",value)
             value = re.split("(<.*?>)",value)
             m = []
             for i in value:
@@ -194,17 +205,13 @@ def check_validity(string, start, table):
                 else:
                     m.append(i)
             value = m
-            # print("value after re.split : ",value)
             if value != 'ε':
                 value = value[::-1]
                 value = list(value)
-                # print("stack below list(value)",stack)
                 stack.pop()
-                # print("stack after pop",stack)
-                print(value)
+
                 for ele in value:
                     stack.append(ele)
-                print("stack in if",stack)
             else:
                 stack.pop()
     
@@ -284,6 +291,7 @@ def read_file():
   with open(input_file,'r') as filereader:
       for row in filereader:
         string += row
+#   print("string",string)
   return string 
 
 if __name__ == "__main__":
