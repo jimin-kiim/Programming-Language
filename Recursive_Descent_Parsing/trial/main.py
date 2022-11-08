@@ -87,7 +87,8 @@ def cal_first(s, productions):
                         for k in f:
                             first.add(k)
             else:
-                c="<"+c+">"
+                if c != "ε":
+                    c="<"+c+">"
                 first.add(c)
                 break
                 
