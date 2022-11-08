@@ -4,11 +4,7 @@ import pandas as pd
 
 def cal_follow(s, productions, first):
     follow = set()
-    # if len(s)!=1 :
-    #     return {}
-    # print("s",s,end=" ")
-    # print(productions.keys())
-    # print(list(productions.keys()))
+
     # 시작 심볼은 $을 반드시 FOLLOW로 갖습니다. 
     if(s == list(productions.keys())[0]):
         follow.add('$')  
@@ -29,7 +25,6 @@ def cal_follow(s, productions, first):
                     while(idx != len(productions[i][j]) - 1):
                         idx += 1
                         string = productions[i][j][idx]
-                        # print("productions[i][j] :",productions[i][j])
                         splitted_string = re.split("\W+",string)
                         m = []
                         for string in splitted_string:
@@ -38,7 +33,6 @@ def cal_follow(s, productions, first):
                             else:
                                 m.append(string)
                         string = m[0]
-                        # print("STRING: ",string)
                         if(not string.isupper()):
                             string="<"+string+">"
                             follow.add(string)
@@ -68,13 +62,11 @@ def cal_follow(s, productions, first):
     return follow
     
 def cal_first(s, productions):
-    
     first = set()
-    
     for i in range(len(productions[s])):
         for j in range(len(productions[s][i])):
             c = productions[s][i][j]
-            
+
             splitted_string = re.split("\W+",c)
             m = []
             for string in splitted_string:
@@ -83,7 +75,7 @@ def cal_first(s, productions):
                 else:
                     m.append(string)
             c = m[0]
-            # print(splitted_string)
+
             if(c.isupper()):
                 c="<"+c+">"
                 f = cal_first(c, productions)
@@ -118,7 +110,7 @@ def parsing_table(productions, first, follow):
             if val != 'ε':
                 for element in first[key]:
                     if(element != 'ε'):
-                        if(not val[0].isupper()) :
+                        if(not val[1].isupper()) :
                             if(element in val):
                                 table[key, element] = val
                             else:
@@ -139,10 +131,11 @@ def parsing_table(productions, first, follow):
     for pair in table:
         new_table[pair[1]][pair[0]] = table[pair]
 
-
+    parsing_table = pd.DataFrame(new_table)
     print("\n")
     print("\nParsing Table in matrix form\n")
     print(pd.DataFrame(new_table).fillna('-'))
+    parsing_table.to_csv("parsing_table.md",sep = '|')
     print("\n")
     
     return table
@@ -189,13 +182,8 @@ def counting_terminal(statement):
     return input_string
 
 def check_validity(string, start, table):
-    
     accepted = True
-    # print("string : ",string)
     statements = re.split("\n", string)
-    # splitted_string = re.split(" |\n", string)
-    # splitted_string = re.split(" ", string)
-    # print("splitted string : ",statements)
     input_string = []
     for statement in statements:
         input_string += counting_terminal(statement)
@@ -307,7 +295,6 @@ def main():
         print(lhs, ":" , rhs)
     
     table = parsing_table(productions, first, follow)
-    # string = input("Enter a string to check its valididty : ")
     string = read_file()
     check_validity(string, start, table)
     grammar.close()
@@ -318,7 +305,6 @@ def read_file():
     with open(input_file,'r') as filereader:
         for row in filereader:
             string += row
-#   print("string",string)
     return string 
 
 if __name__ == "__main__":

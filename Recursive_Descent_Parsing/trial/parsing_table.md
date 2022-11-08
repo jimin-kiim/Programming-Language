@@ -1,0 +1,7 @@
+|<ident>|<const>|<left_paren>|<add_op>|<right_paren>|$|<mult_op>
+<STATEMENT>|<ident><assignment_op><EXPRESSION>||||||
+<EXPRESSION>|<TERM><TERM_TAIL>|<TERM><TERM_TAIL>|<TERM><TERM_TAIL>||||
+<TERM>|<FACTOR><FACTOR_TAIL>|<FACTOR><FACTOR_TAIL>|<FACTOR><FACTOR_TAIL>||||
+<FACTOR>|<ident>|<const>|<left_paren><EXPRESSION><right_paren>||||
+<TERM_TAIL>||||<add_op><TERM><TERM_TAIL>|ε|ε|
+<FACTOR_TAIL>||||ε|ε|ε|<mult_op><FACTOR><FACTOR_TAIL>

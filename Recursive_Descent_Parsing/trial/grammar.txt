@@ -1,6 +1,6 @@
 <STATEMENT> → <ident> <assignment_op> <EXPRESSION>
 <EXPRESSION> → <TERM> <TERM_TAIL>
-<TERM_TAIL> → <add_operator> <TERM> <TERM_TAIL> | ε
+<TERM_TAIL> → <add_op> <TERM> <TERM_TAIL> | ε
 <TERM> → <FACTOR> <FACTOR_TAIL>
 <FACTOR_TAIL> → <mult_op> <FACTOR> <FACTOR_TAIL> | ε
 <FACTOR> → <left_paren> <EXPRESSION> <right_paren> | <ident> | <const> 
