@@ -49,18 +49,30 @@ def cal_follow(s, productions, first):
                                     follow.add(x)
                             
     return follow
-   
+    
 def cal_first(s, productions):
     
     first = set()
     
     for i in range(len(productions[s])):
-        
+
         for j in range(len(productions[s][i])):
             
             c = productions[s][i][j]
+            # print("c :",c,"\n")
             
+            # c = re.split("<*>",c)
+            splitted_string = re.split("\W+",c)
+            m = []
+            for string in splitted_string:
+                if (string == ""):
+                    pass
+                else:
+                    m.append(string)
+            c = m[0]
+            # print(splitted_string)
             if(c.isupper()):
+                c="<"+c+">"
                 f = cal_first(c, productions)
                 if('ε' not in f):
                     for k in f:
@@ -75,6 +87,7 @@ def cal_first(s, productions):
                         for k in f:
                             first.add(k)
             else:
+                c="<"+c+">"
                 first.add(c)
                 break
                 
@@ -286,13 +299,13 @@ def main():
     grammar.close()
 
 def read_file():
-  string = ""
-  input_file = sys.argv[1]
-  with open(input_file,'r') as filereader:
-      for row in filereader:
-        string += row
+    string = ""
+    input_file = sys.argv[1]
+    with open(input_file,'r') as filereader:
+        for row in filereader:
+            string += row
 #   print("string",string)
-  return string 
+    return string 
 
 if __name__ == "__main__":
     main()
