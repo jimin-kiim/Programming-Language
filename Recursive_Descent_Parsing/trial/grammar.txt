@@ -1,6 +1,8 @@
+<PROGRAM> → <STATEMENTS>
+<STATEMENTS> → <STATEMENT> | <STATEMENT> <semi_colon> <STATEMENT> 
 <STATEMENT> → <ident> <assignment_op> <EXPRESSION>
 <EXPRESSION> → <TERM> <TERM_TAIL>
 <TERM_TAIL> → <add_op> <TERM> <TERM_TAIL> | ε
 <TERM> → <FACTOR> <FACTOR_TAIL>
-<FACTOR_TAIL> → <mult_op> <FACTOR> <FACTOR_TAIL> | ε
+<FACTOR_TAIL> → <mult_op> <FACTOR> <FACTOR_TAIL> | ε 
 <FACTOR> → <left_paren> <EXPRESSION> <right_paren> | <ident> | <const> 

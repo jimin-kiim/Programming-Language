@@ -135,7 +135,7 @@ def parsing_table(productions, first, follow):
     print("\n")
     print("\nParsing Table in matrix form\n")
     print(pd.DataFrame(new_table).fillna('-'))
-    parsing_table.to_csv("parsing_table.md",sep = '|')
+    parsing_table.to_csv("parsing_table.txt",sep = '|')
     print("\n")
     
     return table
@@ -182,17 +182,30 @@ def counting_terminal(statement):
     return input_string
 
 def check_validity(string, start, table):
+    print("start:",start)
     accepted = True
     statements = re.split("\n", string)
+
+    # statements = re.split(";|\n", string)
+    # m = []
+    # for statement in statements:
+    #     if (statement == ""):
+    #         pass
+    #     else:
+    #         m.append(statement)
+    # statements = m
+    print("statements",statements)
     input_string = []
     for statement in statements:
         input_string += counting_terminal(statement)
+    # print("input_string",input_string)
     input_string.append('$')
     stack = []
     stack.append('$')
     stack.append(start)
     idx = 0
     print("Stack\t\tInput\t\tMoves") 
+
     while (len(stack) > 0):
         top = stack[-1]
         print(f"Top => {top}")
@@ -212,6 +225,7 @@ def check_validity(string, start, table):
                 break
             
             value = table[key]
+            # print(">>>>>key: ",key, "value: ",value)
             value = re.split("(<.*?>)",value)
             m = []
             for i in value:
@@ -220,7 +234,9 @@ def check_validity(string, start, table):
                 else:
                     m.append(i)
             value = m
-            if value != 'ε':
+            # print("<<<<<value",value)
+            if value[0] != 'ε':
+                # print(">>>>>VALUE != 'ε'")
                 value = value[::-1]
                 value = list(value)
                 stack.pop()
@@ -228,7 +244,10 @@ def check_validity(string, start, table):
                 for ele in value:
                     stack.append(ele)
             else:
+                # print(">>>>>VALUE  == 'ε'")
+                # print(">>>>>STACK",stack)
                 stack.pop()
+                
     
     if accepted:
         print("String accepted")
@@ -296,6 +315,7 @@ def main():
     
     table = parsing_table(productions, first, follow)
     string = read_file()
+
     check_validity(string, start, table)
     grammar.close()
 
