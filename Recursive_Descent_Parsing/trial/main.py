@@ -4,10 +4,14 @@ import pandas as pd
 
 def cal_follow(s, productions, first):
     follow = set()
-    if len(s)!=1 :
-        return {}
+    # if len(s)!=1 :
+    #     return {}
+    # print("s",s,end=" ")
+    # print(productions.keys())
+    # print(list(productions.keys()))
+    # 시작 심볼은 $을 반드시 FOLLOW로 갖습니다. 
     if(s == list(productions.keys())[0]):
-        follow.add('$') 
+        follow.add('$')  
     
     for i in productions:
         for j in range(len(productions[i])):
@@ -24,11 +28,24 @@ def cal_follow(s, productions, first):
                 else:
                     while(idx != len(productions[i][j]) - 1):
                         idx += 1
-                        if(not productions[i][j][idx].isupper()):
-                            follow.add(productions[i][j][idx])
+                        string = productions[i][j][idx]
+                        # print("productions[i][j] :",productions[i][j])
+                        splitted_string = re.split("\W+",string)
+                        m = []
+                        for string in splitted_string:
+                            if (string == ""):
+                                pass
+                            else:
+                                m.append(string)
+                        string = m[0]
+                        # print("STRING: ",string)
+                        if(not string.isupper()):
+                            string="<"+string+">"
+                            follow.add(string)
                             break
                         else:
-                            f = cal_first(productions[i][j][idx], productions)
+                            string="<"+string+">"
+                            f = cal_first(string, productions)
                             
                             if('ε' not in f):
                                 for x in f:
@@ -55,13 +72,9 @@ def cal_first(s, productions):
     first = set()
     
     for i in range(len(productions[s])):
-
         for j in range(len(productions[s][i])):
-            
             c = productions[s][i][j]
-            # print("c :",c,"\n")
             
-            # c = re.split("<*>",c)
             splitted_string = re.split("\W+",c)
             m = []
             for string in splitted_string:
@@ -172,7 +185,7 @@ def counting_terminal(statement):
             input_string.append(i)
             number_of_id += 1
     print(statement)
-    print(f"ID: {number_of_id}; CONST: {number_of_const}; OP: {number_of_op};")
+    print(f"ID: {number_of_id}; CONST: {number_of_const}; OP: {number_of_op};\n")
     return input_string
 
 def check_validity(string, start, table):
