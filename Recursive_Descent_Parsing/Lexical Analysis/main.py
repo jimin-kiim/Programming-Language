@@ -5,10 +5,9 @@ next_token = ""
 index = 0
 next_char = 0
 char_class = 0
-# lex_len = 0
 lexeme = []
 
-EOF = 100
+EOF = "EOF"
 
 LETTER = 0
 DIGIT = 1
@@ -23,6 +22,7 @@ MULT_OP = 23
 DIV_OP = 24
 LEFT_PAREN = 25
 RIGHT_PAREN = 26
+SEMI_COLON = 27
 
 def read_file():
     string = ""
@@ -30,6 +30,7 @@ def read_file():
     with open(input_file,'r') as filereader:
         for row in filereader:
             string += row
+    
     return string 
 
 def get_char():
@@ -39,7 +40,6 @@ def get_char():
     global char_class
 
     next_char = input[index]
-    print(">>>>NEXT_CHAR",next_char)
     index += 1
     if  next_char != "\0" :
         if next_char.isalpha():
@@ -50,7 +50,6 @@ def get_char():
             char_class = UNKNOWN
     else:
         char_class = EOF
-    print(">>>CHAR_CLASS",char_class)
 
 def get_non_blank():
     global next_char
@@ -58,18 +57,10 @@ def get_non_blank():
         get_char()
 
 def add_char():
-    # global lex_len
     global next_char
     global lexeme
-    # if lex_len <= 98:
-        # print("lex_len")
-        # lexeme = next_char
-    # lexeme[lex_len] = next_char
-    # lex_len += 1
+    
     lexeme.append(next_char)
-        # lexeme[lex_len] = 0
-    # else:
-        # print("Error- lexeme is too long")
 
 def lookup(character):
     global next_token 
@@ -91,6 +82,12 @@ def lookup(character):
     elif character == "/":
         add_char()
         next_token = DIV_OP
+    elif character == "=":
+        add_char()
+        next_token = ASSIGN_OP
+    elif character == ";":
+        add_char()
+        next_token = SEMI_COLON
     else:
         add_char()
         next_token = "\0"
@@ -99,9 +96,9 @@ def lookup(character):
 def lex():
     global char_class
     global next_token
-    # global lex_len
+    global next_char
     global lexeme
-    # lex_len = 0
+
     lexeme = []
     get_non_blank()
     if char_class == LETTER:
@@ -122,8 +119,8 @@ def lex():
         lookup(next_char)
         get_char()
     elif char_class == EOF:
-        next_token = "\0"
-        lexeme = "\0"
+        next_token = EOF
+        lexeme = "EOF"
     print_lexeme = ''.join(lexeme)
     print("Next token is", next_token, "Next lexeme is", print_lexeme )
     return next_token
@@ -131,12 +128,11 @@ def lex():
 def main():
     global input 
     input = read_file()
-    print(">>>INPUT",input)
+    input += "\0"
     get_char()
     lex()
-    while(next_token!="\0"):
+    while(next_token!="EOF"):
         lex()
-
 
 if __name__ == "__main__":
     main()
