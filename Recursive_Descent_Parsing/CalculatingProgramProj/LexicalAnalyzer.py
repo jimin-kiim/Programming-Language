@@ -61,7 +61,7 @@ def lookup(character):
         next_token = "\0"
     return next_token
 
-def lex():
+def lexical():
     global char_class
     global next_token
     global next_char
@@ -82,7 +82,7 @@ def lex():
         while char_class == DIGIT:
             add_char()
             get_char()
-        next_token = INT_LIT
+        next_token = CONST
     elif char_class == UNKNOWN:
         lookup(next_char)
         get_char()
