@@ -106,9 +106,13 @@ def parsing_table(productions, first, follow):
     table = {}
     for key in productions:
         for value in productions[key]:
+            # print(">>>value", value)
             val = ''.join(value)
+            # print(">>>>VAL",val)
             if val != 'ε':
+                # print(">>>first[key]",first[key])
                 for element in first[key]:
+                    # print(">>>>>ELEMENT",element)
                     if(element != 'ε'):
                         if(not val[1].isupper()) :
                             if(element in val):
@@ -244,8 +248,8 @@ def check_validity(string, start, table):
                 for ele in value:
                     stack.append(ele)
             else:
-                # print(">>>>>VALUE  == 'ε'")
-                # print(">>>>>STACK",stack)
+                print(">>>>>VALUE  == 'ε'")
+                print(">>>>>STACK",stack)
                 stack.pop()
                 
     

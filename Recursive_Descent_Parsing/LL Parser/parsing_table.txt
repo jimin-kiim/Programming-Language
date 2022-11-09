@@ -1,6 +1,7 @@
-|<ident>|<const>|<left_paren>|<add_op>|$|<right_paren>|<semi_colon>|<mult_op>
+|<ident>|<const>|<left_paren>|<add_op>|<right_paren>|$|<semi_colon>|<mult_op>
 <PROGRAM>|<STATEMENTS>|||||||
-<STATEMENTS>|<STATEMENT><semi_colon><STATEMENT>|||||||
+<STATEMENTS>|<STATEMENT><semi_colon><STATEMENTS>|||||||
+<P>|<STATEMENT>|||||||
 <STATEMENT>|<ident><assignment_op><EXPRESSION>|||||||
 <EXPRESSION>|<TERM><TERM_TAIL>|<TERM><TERM_TAIL>|<TERM><TERM_TAIL>|||||
 <TERM>|<FACTOR><FACTOR_TAIL>|<FACTOR><FACTOR_TAIL>|<FACTOR><FACTOR_TAIL>|||||

@@ -1,5 +1,6 @@
 <PROGRAM> → <STATEMENTS>
-<STATEMENTS> → <STATEMENT> | <STATEMENT> <semi_colon> <STATEMENT> 
+<STATEMENTS> → <STATEMENT> <semi_colon> <P>
+<P> → <STATEMENTS> | <STATEMENT> 
 <STATEMENT> → <ident> <assignment_op> <EXPRESSION>
 <EXPRESSION> → <TERM> <TERM_TAIL>
 <TERM_TAIL> → <add_op> <TERM> <TERM_TAIL> | ε
