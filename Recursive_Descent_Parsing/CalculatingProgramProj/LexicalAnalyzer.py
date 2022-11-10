@@ -1,6 +1,6 @@
 from constants import *
 import global_variables as g
-
+from Ident import *
 # character를 한 자를 읽어 charater의 Type을 알아냅니다. 
 def get_char():
     g.next_char = g.input[g.index]
@@ -81,6 +81,9 @@ def lexical():
             get_char()
         g.next_token = IDENT # 하나의 lexeme으로 인식 후 이의 타입이 Identifier 임을 저장. 
         g.ident_num += 1
+        # lexeme_as_string = ''.join(g.lexeme)
+        # ident = Ident(lexeme_as_string)
+        # g.identifier_names.append(ident.name)
     
     elif g.char_class == DIGIT: # 숫자로 시작한다면 
         add_char()
@@ -103,5 +106,5 @@ def lexical():
         g.next_token = EOF
         g.lexeme = "EOF"
     
-    print_lexeme = ''.join(g.lexeme)
-    print("Next token is", g.next_token, "Next lexeme is", print_lexeme )
+    lexeme_as_string = ''.join(g.lexeme)
+    print("Next token is", g.next_token, "Next lexeme is", lexeme_as_string )
