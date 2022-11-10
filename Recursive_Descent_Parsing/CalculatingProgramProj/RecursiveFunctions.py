@@ -7,16 +7,6 @@ def factortail():
     while g.next_token == MULT_OP:
         lexical()
         factor()
-    # if g.next_token == MULT_OP:
-    #     lexical()
-
-    #     factor()
-    #     factortail()
-    # elif g.next_token == EOF or g.next_token == IDENT or g.next_token == CONST:
-    #     lexical()
-    # else:
-    #     print(">>>>>",g.next_token,g.next_char)
-    #     print("Error")
     print("Exit <factortail>")
 
 def factor():
@@ -26,9 +16,11 @@ def factor():
     elif g.next_token == LEFT_PAREN:
         lexical()
         expression()
+        
         if g.next_token == RIGHT_PAREN:
             lexical()
         else:
+            print(">>>>>",g.next_token,g.next_char)
             print("Error")
     else:
         print(">>>>>",g.next_token,g.next_char)
@@ -40,15 +32,6 @@ def termtail():
     while g.next_token == ADD_OP:
         lexical()
         term()
-    # if g.next_token == ADD_OP:
-    #     lexical()
-    #     term()
-    #     termtail()
-    # elif g.next_token == EOF:
-    #     lexical()
-    # else:
-    #     print(">>>>>",g.next_token,g.next_char)
-    #     print("Error")
     print("Exit <termtail>")
 
 def term():
@@ -74,6 +57,10 @@ def statement():
             print("Error")
     else:
         print("Error")
+    print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
+    g.ident_num = 0
+    g.const_num = 0
+    g.op_num = 0
     print("Exit <statement>")
 
 def statements():
