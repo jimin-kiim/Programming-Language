@@ -10,8 +10,9 @@ const_num = 0
 op_num = 0
 
 temp = None
-valid_identifiers = []
-identifier_names = []
+valid_identifiers = {}
+defined_ident_names = []
+identifier_names = set()
 
 # stack = []
 refined_expression = []
