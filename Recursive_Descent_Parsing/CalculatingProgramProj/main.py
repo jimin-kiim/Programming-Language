@@ -8,7 +8,7 @@ def main():
     g.input = read_file()
     g.input = g.input.replace("\n"," ")
     g.input += "\0"
-    
+    print(">>>>>INPUT",g.input)
     get_char()
     lexical()
     program()

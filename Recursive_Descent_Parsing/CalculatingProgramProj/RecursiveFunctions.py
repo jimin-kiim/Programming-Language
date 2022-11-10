@@ -1,19 +1,22 @@
 from constants import *
-# from global_variables import *
 import global_variables as g
 from LexicalAnalyzer import *
 
 def factortail():
     print("Enter <factortail>")
-    print(">>>>",g.next_token)
-    if g.next_token == MULT_OP:
+    while g.next_token == MULT_OP:
         lexical()
         factor()
-        factortail()
-    elif g.next_token == EOF:
-        lexical()
-    else:
-        print("Error")
+    # if g.next_token == MULT_OP:
+    #     lexical()
+
+    #     factor()
+    #     factortail()
+    # elif g.next_token == EOF or g.next_token == IDENT or g.next_token == CONST:
+    #     lexical()
+    # else:
+    #     print(">>>>>",g.next_token,g.next_char)
+    #     print("Error")
     print("Exit <factortail>")
 
 def factor():
@@ -28,19 +31,24 @@ def factor():
         else:
             print("Error")
     else:
+        print(">>>>>",g.next_token,g.next_char)
         print("Error")
     print("Exit <factor>")
 
 def termtail():
     print("Enter <termtail>")
-    if g.next_token == ADD_OP:
+    while g.next_token == ADD_OP:
         lexical()
         term()
-        termtail()
-    elif g.next_token == "\0":
-        lexical()
-    else:
-        print("Error")
+    # if g.next_token == ADD_OP:
+    #     lexical()
+    #     term()
+    #     termtail()
+    # elif g.next_token == EOF:
+    #     lexical()
+    # else:
+    #     print(">>>>>",g.next_token,g.next_char)
+    #     print("Error")
     print("Exit <termtail>")
 
 def term():

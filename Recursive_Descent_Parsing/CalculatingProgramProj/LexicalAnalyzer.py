@@ -18,10 +18,8 @@ def get_char():
 
 # UNKNOWN으로 판별난 character가 빈칸은 아니였는지 다시 체크 후 빈칸이었다면 다시 체크
 def get_non_blank():
-    # print(">>>>>next_char",g.next_char,g.char_class)
     while g.next_char.isspace():
         get_char()
-        # print(">>>>NEXT_CHAR",g.next_char,g.char_class)
 
 def add_char():
     g.lexeme.append(g.next_char)
@@ -67,7 +65,6 @@ def lookup(character):
         print(">>>>ELSE",character)
         add_char()
         g.next_token = "\0"
-    return g.next_token
 
 def lexical():
     g.lexeme = []
@@ -103,15 +100,13 @@ def lexical():
     elif g.char_class == UNKNOWN:
         lookup(g.next_char)
         get_char()
+        get_non_blank()
         if g.char_class == UNKNOWN:
-            # lookup(g.next_char)
             lookup(g.next_char)
             get_char()
-    else : # g.char_class == EOF
-        # print(">>>>ELSE",g.next_char)
+    else :
         g.next_token = EOF
         g.lexeme = "EOF"
+    
     print_lexeme = ''.join(g.lexeme)
-    # print(">>>>ABOVE PRINT",g.next_char)
     print("Next token is", g.next_token, "Next lexeme is", print_lexeme )
-    return g.next_token
