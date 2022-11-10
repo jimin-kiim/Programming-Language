@@ -10,7 +10,9 @@ const_num = 0
 op_num = 0
 
 temp = None
+ident = None
 valid_identifiers = {}
+defined_identifiers = {}
 defined_ident_names = []
 identifier_names = set()
 

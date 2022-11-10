@@ -13,10 +13,12 @@ def factor():
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
         g.identifier_names.add(lexeme_as_string)
-        g.refined_expression.append(lexeme_as_string)
-        if lexeme_as_string not in g.defined_ident_names:
+        if lexeme_as_string not in g.defined_identifiers:
             g.error = f"(Error) “정의되지 않은 변수({lexeme_as_string})가 참조됨”"
-        g.should_be_calculated = False
+            g.should_be_calculated = False
+        else:
+            g.refined_expression.append(g.defined_identifiers[lexeme_as_string])
+        
         lexical()
     elif g.next_token == CONST:
         lexeme_as_string = ''.join(g.lexeme)
@@ -62,8 +64,9 @@ def statement():
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
         ident = Ident(lexeme_as_string)
-        g.defined_ident_names.append(ident.name)
-        g.identifier_names.add(ident.name)
+        g.defined_identifiers[g.ident.name] = g.ident.value
+        g.defined_ident_names.append(g.ident.name)
+        g.identifier_names.add(g.ident.name)
         lexical()
         if g.next_token == ASSIGN_OP:
             lexical()
@@ -75,10 +78,10 @@ def statement():
     
     print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
     if g.should_be_calculated:
-        ident.setValue = infixToPostfix(g.refined_expression)
+        g.ident.value = evaluate(g.refined_expression)
         # user["name"] = "사용자"
-        g.valid_identifiers[ident.name] = ident.value
-        print()
+        g.valid_identifiers[g.ident.name] = g.ident.value
+        print(">>>>>>>g.valid_identifiers",g.valid_identifiers)
     
     if g.warning:
         print(g.warning)
