@@ -1,9 +1,11 @@
 EOF = "EOF"
 
+# Character Type
 LETTER = 0
 DIGIT = 1
 UNKNOWN = 99
 
+# Lexeme Type
 CONST = 10
 IDENT = 11
 ASSIGN_OP = 20

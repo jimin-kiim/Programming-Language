@@ -5,11 +5,12 @@ from LexicalAnalyzer import *
 
 def factortail():
     print("Enter <factortail>")
+    print(">>>>",g.next_token)
     if g.next_token == MULT_OP:
         lexical()
         factor()
         factortail()
-    elif g.next_token == "EOF":
+    elif g.next_token == EOF:
         lexical()
     else:
         print("Error")
@@ -36,7 +37,7 @@ def termtail():
         lexical()
         term()
         termtail()
-    elif g.next_token == "EOF":
+    elif g.next_token == "\0":
         lexical()
     else:
         print("Error")
@@ -49,14 +50,12 @@ def term():
     print("Exit <term>")
 
 def expression():
-    # global next_token
     print("Enter <expression>")
     term()
     termtail()
     print("Exit <expression>")
 
 def statement():
-    # global next_token
     print("Enter <statement>")
     if g.next_token == IDENT:
         lexical()
@@ -70,7 +69,6 @@ def statement():
     print("Exit <statement>")
 
 def statements():
-    # global next_token
     print("Enter <statements>")
     statement()
     while g.next_token == SEMI_COLON:
@@ -79,7 +77,6 @@ def statements():
     print("Exit <statements>")
 
 def program():
-    # global next_token
     print("Enter <program>")
     statements()
     print("Exit <program>")

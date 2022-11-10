@@ -163,8 +163,6 @@ def main():
     input = read_file()
     input += "\0"
     get_char()
-    # 
-    # get_char()
     lex()
     expr()
     while(next_token!="EOF"):
