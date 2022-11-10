@@ -1,62 +1,60 @@
 from constants import *
 import global_variables as g
 from LexicalAnalyzer import *
-
+from calculating import *
 def factortail():
-    print("Enter <factortail>")
     while g.next_token == MULT_OP:
+        lexeme_as_string = ''.join(g.lexeme)
+        g.refined_expression.append(lexeme_as_string)
         lexical()
         factor()
-    print("Exit <factortail>")
 
 def factor():
-    print("Enter <factor>")
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
-        # print(">>>>>>>",lexeme_as_string,g.identifier_names)
         if lexeme_as_string not in g.identifier_names:
             g.error = f"(Error) “정의되지 않은 변수({lexeme_as_string})가 참조됨”"
+        g.should_be_calculated = False
         lexical()
     elif g.next_token == CONST:
+        lexeme_as_string = ''.join(g.lexeme)
+        g.refined_expression.append(lexeme_as_string)
         lexical()
     elif g.next_token == LEFT_PAREN:
+        lexeme_as_string = ''.join(g.lexeme)
+        g.refined_expression.append(lexeme_as_string)
         lexical()
         expression()
         
         if g.next_token == RIGHT_PAREN:
+            lexeme_as_string = ''.join(g.lexeme)
+            g.refined_expression.append(lexeme_as_string)
             lexical()
         else:
-            # print(">>>>>ELIF",g.next_token,g.next_char)
             print("Error")
     elif g.next_token == ADD_OP or g.next_token == MULT_OP:
         lexeme_as_string = ''.join(g.lexeme)
         g.warning = f"(Warning) “중복 연산자({lexeme_as_string}) 제거”"
     else:
-        # print(">>>>>ELSE",g.next_token,g.next_char)
         print("Error")
-    print("Exit <factor>")
 
 def termtail():
-    print("Enter <termtail>")
     while g.next_token == ADD_OP:
+        lexeme_as_string = ''.join(g.lexeme)
+        g.refined_expression.append(lexeme_as_string)
         lexical()
         term()
-    print("Exit <termtail>")
 
 def term():
-    print("Enter <term>")
     factor()
     factortail()
-    print("Exit <term>")
 
 def expression():
-    print("Enter <expression>")
     term()
     termtail()
-    print("Exit <expression>")
 
 def statement():
-    print("Enter <statement>")
+    ident = None
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
         ident = Ident(lexeme_as_string)
@@ -71,7 +69,11 @@ def statement():
         print("Error")
     
     print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
-
+    if g.should_be_calculated:
+        ident.setValue = infixToPostfix(g.refined_expression)
+        g.valid_identifiers.append(ident)
+        print()
+    
     if g.warning:
         print(g.warning)
     if g.error:
@@ -84,18 +86,22 @@ def statement():
     g.op_num = 0
     g.warning = None
     g.error = None
-
-    print("Exit <statement>")
+    g.refined_expression = []
+    g.should_be_calculated = True
 
 def statements():
-    print("Enter <statements>")
     statement()
     while g.next_token == SEMI_COLON:
         lexical()
         statement()
-    print("Exit <statements>")
+    print("Result ==>",end="")
+    for ident in g.identifier_names:
+        for valid_ident in g.valid_identifiers:
+            if ident == valid_ident.name:
+                print(f" {ident}: {valid_ident.value};", end="")
+            else:
+                print(f" {ident}: Unknown;", end="")
+    print("")
 
 def program():
-    print("Enter <program>")
     statements()
-    print("Exit <program>")
