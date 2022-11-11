@@ -1,8 +1,8 @@
 input = ""
 next_token = ""
-index = 0
-next_char = 0
-char_class = 0
+# index = 0
+# next_char = 0
+# char_class = 0
 lexeme = []
 
 ident_num = 0
