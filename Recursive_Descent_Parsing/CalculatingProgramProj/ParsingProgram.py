@@ -1,6 +1,6 @@
 from constants import *
 import global_variables as g
-from Lexer import *
+from LexicalAnalyzer import *
 from Calculator import *
 
 class ParsingProgram:
@@ -14,7 +14,7 @@ class ParsingProgram:
         self.should_be_calculated = True
         self.statement_to_be_printed = []
 
-        self.lexer = Lexer()
+        self.lexical_analyzer = LexicalAnalyzer()
         self.calculator = Calculator()
 
     def update_refined_expression(self):
@@ -25,7 +25,7 @@ class ParsingProgram:
     def factortail(self):
         while g.next_token == MULT_OP:
             self.update_refined_expression()
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
             self.factor()
 
     def factor(self):
@@ -43,20 +43,20 @@ class ParsingProgram:
                 ident = [ ident for ident in self.identifiers if ident.name == lexeme_as_string ]
                 self.refined_expression.append(ident[0]) 
             self.statement_to_be_printed.append(" " + lexeme_as_string)
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
         
         elif g.next_token == CONST:
             self.update_refined_expression()
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
         
         elif g.next_token == LEFT_PAREN:
             self.update_refined_expression()
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
             self.expression()
             
             if g.next_token == RIGHT_PAREN:
                 self.update_refined_expression()
-                self.lexer.lexical()
+                self.lexical_analyzer.lexical()
             else:
                 print("Error")
         
@@ -72,7 +72,7 @@ class ParsingProgram:
     def termtail(self):
         while g.next_token == ADD_OP:
             self.update_refined_expression()
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
             self.term()
 
     def term(self):
@@ -88,12 +88,12 @@ class ParsingProgram:
             lexeme_as_string = ''.join(g.lexeme)
             self.ident = Ident(lexeme_as_string)
             self.statement_to_be_printed.append(lexeme_as_string)
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
 
             if g.next_token == ASSIGN_OP:
                 lexeme_as_string = ''.join(g.lexeme)
                 self.statement_to_be_printed.append(" " + lexeme_as_string)
-                self.lexer.lexical()
+                self.lexical_analyzer.lexical()
                 self.expression()
             else:
                 print("Error")
@@ -133,7 +133,7 @@ class ParsingProgram:
         self.statement()
 
         while g.next_token == SEMI_COLON:
-            self.lexer.lexical()
+            self.lexical_analyzer.lexical()
             self.statement()
         
         print("Result ==>",end="")
