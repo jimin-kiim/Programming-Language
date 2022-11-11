@@ -6,7 +6,7 @@ from Calculator import *
 class ParsingProgram:
     def __init__(self):
         self.ident = None
-        self.identifiers = set()
+        self.identifiers = []
 
         self.refined_expression = []
         self.warning = None
@@ -20,7 +20,7 @@ class ParsingProgram:
     def update_refined_expression(self):
         lexeme_as_string = ''.join(g.lexeme)
         self.refined_expression.append(lexeme_as_string)
-        self.statement_to_be_printed.append(" "+lexeme_as_string)
+        self.statement_to_be_printed.append(" " + lexeme_as_string)
 
     def factortail(self):
         while g.next_token == MULT_OP:
@@ -38,15 +38,17 @@ class ParsingProgram:
                 self.should_be_calculated = False
                 if lexeme_as_string not in all_ident_names:
                     ident = Ident(lexeme_as_string)
-                    self.identifiers.add(ident)
+                    self.identifiers.append(ident)
             else:
                 ident = [ ident for ident in self.identifiers if ident.name == lexeme_as_string ]
                 self.refined_expression.append(ident[0]) 
-            self.statement_to_be_printed.append(" "+lexeme_as_string)
+            self.statement_to_be_printed.append(" " + lexeme_as_string)
             self.lexer.lexical()
+        
         elif g.next_token == CONST:
             self.update_refined_expression()
             self.lexer.lexical()
+        
         elif g.next_token == LEFT_PAREN:
             self.update_refined_expression()
             self.lexer.lexical()
@@ -57,11 +59,13 @@ class ParsingProgram:
                 self.lexer.lexical()
             else:
                 print("Error")
+        
         elif g.next_token == ADD_OP or g.next_token == MULT_OP:
             lexeme_as_string = ''.join(g.lexeme)
             self.refined_expression.pop()
             self.statement_to_be_printed.pop()
             self.warning = f"(Warning) “중복 연산자({lexeme_as_string}) 제거”"
+        
         else:
             print("Error")
 
@@ -85,13 +89,15 @@ class ParsingProgram:
             self.ident = Ident(lexeme_as_string)
             self.statement_to_be_printed.append(lexeme_as_string)
             self.lexer.lexical()
+
             if g.next_token == ASSIGN_OP:
                 lexeme_as_string = ''.join(g.lexeme)
-                self.statement_to_be_printed.append(" "+lexeme_as_string)
+                self.statement_to_be_printed.append(" " + lexeme_as_string)
                 self.lexer.lexical()
                 self.expression()
             else:
                 print("Error")
+        
         else:
             print("Error")
 
@@ -99,11 +105,12 @@ class ParsingProgram:
         lexeme_as_string = ''.join(g.lexeme)
         print(''.join(self.statement_to_be_printed))
         print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
+
         if self.should_be_calculated: # 정의되지 않은 변수가 없어서 계산이 가능할 때 
             self.ident.value = self.calculator.evaluate(self.refined_expression) # 우변 계산하고 대입
             self.ident.is_defined = True # 정의된 변수임을 저장. 
         
-        self.identifiers.add(self.ident) # 정의된 변수든 아니든 모든 ident 모아두기. 
+        self.identifiers.append(self.ident) # 정의된 변수든 아니든 모든 ident 모아두기. 
         
         if self.warning:
             print(self.warning)
@@ -112,7 +119,7 @@ class ParsingProgram:
         if self.warning is None and self.error is None:
             print("(OK)")
         print("")
-        
+
         self.ident_num = 0
         self.const_num = 0
         self.op_num = 0
@@ -124,9 +131,11 @@ class ParsingProgram:
 
     def statements(self):
         self.statement()
+
         while g.next_token == SEMI_COLON:
             self.lexer.lexical()
             self.statement()
+        
         print("Result ==>",end="")
         for ident in self.identifiers:
             print(f" {ident.name}: {ident.value};", end="")
