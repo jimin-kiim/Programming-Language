@@ -6,6 +6,7 @@ from calculating import *
 def update_refined_expression():
     lexeme_as_string = ''.join(g.lexeme)
     g.refined_expression.append(lexeme_as_string)
+    g.statement_to_be_printed.append(" "+lexeme_as_string)
 
 def factortail():
     while g.next_token == MULT_OP:
@@ -27,6 +28,8 @@ def factor():
         else:
             ident = [ ident for ident in g.identifiers if ident.name == lexeme_as_string ]
             g.refined_expression.append(ident[0]) 
+        # lexeme_as_string = ''.join(g.lexeme)
+        g.statement_to_be_printed.append(" "+lexeme_as_string)
         lexical()
     elif g.next_token == CONST:
         update_refined_expression()
@@ -44,6 +47,7 @@ def factor():
     elif g.next_token == ADD_OP or g.next_token == MULT_OP:
         lexeme_as_string = ''.join(g.lexeme)
         g.refined_expression.pop()
+        g.statement_to_be_printed.pop()
         g.warning = f"(Warning) “중복 연산자({lexeme_as_string}) 제거”"
     else:
         print("Error")
@@ -66,15 +70,22 @@ def statement():
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
         g.ident = Ident(lexeme_as_string)
+        g.statement_to_be_printed.append(lexeme_as_string)
         lexical()
         if g.next_token == ASSIGN_OP:
+            lexeme_as_string = ''.join(g.lexeme)
+            g.statement_to_be_printed.append(" "+lexeme_as_string)
             lexical()
             expression()
         else:
             print("Error")
     else:
         print("Error")
-    
+
+    g.statement_to_be_printed.append(";")
+    # print()
+    lexeme_as_string = ''.join(g.lexeme)
+    print(''.join(g.statement_to_be_printed))
     print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
     if g.should_be_calculated: # 정의되지 않은 변수가 없어서 계산이 가능할 때 
         g.ident.value = evaluate(g.refined_expression) # 우변 계산하고 대입
@@ -96,6 +107,7 @@ def statement():
     g.error = None
     g.refined_expression = []
     g.should_be_calculated = True
+    g.statement_to_be_printed = []
 
 def statements():
     statement()
@@ -105,7 +117,6 @@ def statements():
     print("Result ==>",end="")
     for ident in g.identifiers:
         print(f" {ident.name}: {ident.value};", end="")
-
     print("")
 
 def program():
