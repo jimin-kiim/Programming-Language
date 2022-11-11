@@ -9,11 +9,11 @@ ident_num = 0
 const_num = 0
 op_num = 0
 
-ident = None
-identifiers = set()
+# ident = None
+# identifiers = set()
 
-refined_expression = []
-warning = None
-error = None
-should_be_calculated = True
-statement_to_be_printed = []
+# refined_expression = []
+# warning = None
+# error = None
+# should_be_calculated = True
+# statement_to_be_printed = []

@@ -10,7 +10,8 @@ def main():
     g.input += "\0"
     get_char()
     lexical()
-    program()
+    parser = ParsingProgram()
+    parser.program()
     while(g.next_token!=EOF):
         lexical()
 
