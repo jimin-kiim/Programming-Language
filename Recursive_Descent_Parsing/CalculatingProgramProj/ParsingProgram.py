@@ -8,19 +8,18 @@ class ParsingProgram:
         self.ident = None
         self.identifiers = []
 
-        self.refined_expression = []
         self.warning = None
         self.error = None
         self.should_be_calculated = True
+        self.refined_expression = []
         self.statement_to_be_printed = []
 
         self.lexical_analyzer = LexicalAnalyzer()
         self.calculator = Calculator()
 
     def update_refined_expression(self):
-        lexeme_as_string = ''.join(g.lexeme)
-        self.refined_expression.append(lexeme_as_string)
-        self.statement_to_be_printed.append(" " + lexeme_as_string)
+        self.refined_expression.append(g.token_string)
+        self.statement_to_be_printed.append(" " + g.token_string)
 
     def factortail(self):
         while g.next_token == MULT_OP:
@@ -30,19 +29,18 @@ class ParsingProgram:
 
     def factor(self):
         if g.next_token == IDENT:
-            lexeme_as_string = ''.join(g.lexeme)
             valid_ident_names = [ ident.name for ident in self.identifiers if ident.is_defined ]
             all_ident_names = [ ident.name for ident in self.identifiers]
-            if lexeme_as_string not in valid_ident_names:
-                self.error = f"(Error) “정의되지 않은 변수({lexeme_as_string})가 참조됨”"
+            if g.token_string not in valid_ident_names:
+                self.error = f"(Error) “정의되지 않은 변수({g.token_string})가 참조됨”"
                 self.should_be_calculated = False
-                if lexeme_as_string not in all_ident_names:
-                    ident = Ident(lexeme_as_string)
+                if g.token_string not in all_ident_names:
+                    ident = Ident(g.token_string)
                     self.identifiers.append(ident)
             else:
-                ident = [ ident for ident in self.identifiers if ident.name == lexeme_as_string ]
+                ident = [ ident for ident in self.identifiers if ident.name == g.token_string ]
                 self.refined_expression.append(ident[0]) 
-            self.statement_to_be_printed.append(" " + lexeme_as_string)
+            self.statement_to_be_printed.append(" " + g.token_string)
             self.lexical_analyzer.lexical()
         
         elif g.next_token == CONST:
@@ -61,10 +59,9 @@ class ParsingProgram:
                 print("Error")
         
         elif g.next_token == ADD_OP or g.next_token == MULT_OP:
-            lexeme_as_string = ''.join(g.lexeme)
             self.refined_expression.pop()
             self.statement_to_be_printed.pop()
-            self.warning = f"(Warning) “중복 연산자({lexeme_as_string}) 제거”"
+            self.warning = f"(Warning) “중복 연산자({g.token_string}) 제거”"
         
         else:
             print("Error")
@@ -85,14 +82,12 @@ class ParsingProgram:
 
     def statement(self):
         if g.next_token == IDENT:
-            lexeme_as_string = ''.join(g.lexeme)
-            self.ident = Ident(lexeme_as_string)
-            self.statement_to_be_printed.append(lexeme_as_string)
+            self.ident = Ident(g.token_string)
+            self.statement_to_be_printed.append(g.token_string)
             self.lexical_analyzer.lexical()
 
             if g.next_token == ASSIGN_OP:
-                lexeme_as_string = ''.join(g.lexeme)
-                self.statement_to_be_printed.append(" " + lexeme_as_string)
+                self.statement_to_be_printed.append(" " + g.token_string)
                 self.lexical_analyzer.lexical()
                 self.expression()
             else:
@@ -102,7 +97,6 @@ class ParsingProgram:
             print("Error")
 
         self.statement_to_be_printed.append(";")
-        lexeme_as_string = ''.join(g.lexeme)
         print(''.join(self.statement_to_be_printed))
         print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
 

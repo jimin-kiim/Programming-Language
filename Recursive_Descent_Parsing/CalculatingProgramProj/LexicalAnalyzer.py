@@ -33,46 +33,56 @@ class LexicalAnalyzer:
         if character == "(":
             self.add_char()
             g.next_token = LEFT_PAREN
+            g.token_string = ''.join(g.lexeme)
 
         elif character == ")":
             self.add_char()
             g.next_token = RIGHT_PAREN
+            g.token_string = ''.join(g.lexeme)
 
         elif character == "+":
             self.add_char()
             g.next_token = ADD_OP
+            g.token_string = ''.join(g.lexeme)
             g.op_num += 1
 
         elif character == "-":
             self.add_char()
             g.next_token = SUB_OP
+            g.token_string = ''.join(g.lexeme)
             g.op_num += 1
 
         elif character == "*":
             self.add_char()
             g.next_token = MULT_OP
+            g.token_string = ''.join(g.lexeme)
             g.op_num += 1
 
         elif character == "/":
             self.add_char()
             g.next_token = DIV_OP
+            g.token_string = ''.join(g.lexeme)
             g.op_num += 1
 
         elif character == ":":
             self.add_char()
             g.next_token = ASSIGN_OP
+            g.token_string = ''.join(g.lexeme)
 
         elif character == "=":
             self.add_char()
             g.next_token = ASSIGN_OP
+            g.token_string = ''.join(g.lexeme)
 
         elif character == ";":
             self.add_char()
             g.next_token = SEMI_COLON
+            g.token_string = ''.join(g.lexeme)
             
         else:
             self.add_char()
             g.next_token = "\0"
+            g.token_string = ''.join(g.lexeme)
 
     def lexical(self):
         g.lexeme = []
@@ -85,6 +95,7 @@ class LexicalAnalyzer:
                 self.add_char()
                 self.get_char()
             g.next_token = IDENT # 하나의 lexeme으로 인식 후 이의 타입이 Identifier 임을 저장. 
+            g.token_string = ''.join(g.lexeme)
             g.ident_num += 1
         
         elif LexicalAnalyzer.char_class == DIGIT: # 숫자로 시작한다면 
@@ -94,6 +105,7 @@ class LexicalAnalyzer:
                 self.add_char()
                 self.get_char()
             g.next_token = CONST # 하나의 lexeme으로 인식 후 Constant임을 저장.
+            g.token_string = ''.join(g.lexeme)
             g.const_num += 1
 
         # 변수, 상수 외의 lexeme 처리
@@ -106,4 +118,5 @@ class LexicalAnalyzer:
                 self.get_char()
         else :
             g.next_token = EOF
-            g.lexeme = "EOF"
+            g.lexeme = EOF
+            g.token_string = EOF
