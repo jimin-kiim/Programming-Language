@@ -1,7 +1,7 @@
 from constants import *
 import global_variables as g
 from Lexer import *
-from calculating import *
+from Calculator import *
 
 class ParsingProgram:
     def __init__(self):
@@ -15,6 +15,7 @@ class ParsingProgram:
         self.statement_to_be_printed = []
 
         self.lexer = Lexer()
+        self.calculator = Calculator()
 
     def update_refined_expression(self):
         lexeme_as_string = ''.join(g.lexeme)
@@ -99,7 +100,7 @@ class ParsingProgram:
         print(''.join(self.statement_to_be_printed))
         print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
         if self.should_be_calculated: # 정의되지 않은 변수가 없어서 계산이 가능할 때 
-            self.ident.value = evaluate(self.refined_expression) # 우변 계산하고 대입
+            self.ident.value = self.calculator.evaluate(self.refined_expression) # 우변 계산하고 대입
             self.ident.is_defined = True # 정의된 변수임을 저장. 
         
         self.identifiers.add(self.ident) # 정의된 변수든 아니든 모든 ident 모아두기. 
@@ -110,7 +111,8 @@ class ParsingProgram:
             print(self.error)
         if self.warning is None and self.error is None:
             print("(OK)")
-
+        print("")
+        
         self.ident_num = 0
         self.const_num = 0
         self.op_num = 0
