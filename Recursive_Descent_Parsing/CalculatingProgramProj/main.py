@@ -1,15 +1,16 @@
 from constants import *
 import global_variables as g
-from FileOpener import *
+from FileProcesor import *
 from Lexer import *
 from ParsingProgram import *
 
 def main():
-    g.input = read_file()
-    g.input = g.input.replace("\n"," ")
-    g.input += "\0"
+    file_processor = FileProcesor()
     lexer = Lexer()
     parser = ParsingProgram()
+
+    g.input = file_processor.read_file()
+    
     lexer.get_char()
     lexer.lexical()
     parser.program()
