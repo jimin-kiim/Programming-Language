@@ -1,3 +1,5 @@
+from Ident import *
+
 Operators = set(['+', '-', '*', '/', '(', ')', '^'])  # collection of Operators
 
 Priority = {'+':1, '-':1, '*':2, '/':2, '^':3} # dictionary having priorities of Operators
@@ -29,14 +31,21 @@ def evaluate(text):
     text = infixToPostfix(text)
     print(text)
     s = list()
-    plus = None
+    
     for symbol in text:
-        if symbol.isdecimal():
+        # if symbol.isdecimal():
+        #     s.append(int(symbol))
+        # if symbol.type == Ident:
+        #     s.append(int(symbol.value))
+        
+        if isinstance(symbol, Ident):
+            print(symbol.name)
+            s.append(int(symbol.value))
+        elif symbol.isdecimal():
             s.append(int(symbol))
-
         # elif not s.is_empty():
         elif len(s) != 0:
-            
+            plus = None
             if symbol == "+":
                 plus = s.pop() + s.pop()
             elif symbol == "-":
@@ -45,9 +54,11 @@ def evaluate(text):
                 plus = s.pop() * s.pop()
             elif symbol == "/":
                 plus = s.pop() / s.pop()
-        
-        if plus is not None:
-            s.append(plus)
+            else:
+                pass
+            if plus is not None:
+                print(">>>>>>>",symbol)
+                s.append(plus)
         else:
             raise Exception("unknown value %s"%symbol)
     return s.pop()

@@ -2,6 +2,7 @@ from constants import *
 import global_variables as g
 from LexicalAnalyzer import *
 from calculating import *
+
 def factortail():
     while g.next_token == MULT_OP:
         lexeme_as_string = ''.join(g.lexeme)
@@ -12,13 +13,19 @@ def factortail():
 def factor():
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
-        g.identifier_names.add(lexeme_as_string)
-        if lexeme_as_string not in g.defined_identifiers:
+        valid_ident_names = [ ident.name for ident in g.identifiers if ident.is_defined ]
+        all_ident_names = [ ident.name for ident in g.identifiers]
+        if lexeme_as_string not in valid_ident_names:
             g.error = f"(Error) “정의되지 않은 변수({lexeme_as_string})가 참조됨”"
             g.should_be_calculated = False
+            if lexeme_as_string not in all_ident_names:
+                ident = Ident(lexeme_as_string)
+                g.identifiers.add(ident)
+
         else:
-            g.refined_expression.append(g.defined_identifiers[lexeme_as_string])
-        
+            ident = [ ident for ident in g.identifiers if ident.name == lexeme_as_string ]
+            # 이름이 lexeme_as_string인 g.identifiers에 있는 ident 객체 가져오고 
+            g.refined_expression.append(ident[0]) # 그 객체를 넣기  
         lexical()
     elif g.next_token == CONST:
         lexeme_as_string = ''.join(g.lexeme)
@@ -60,13 +67,10 @@ def expression():
     print(g.refined_expression)
 
 def statement():
-    ident = None
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
-        ident = Ident(lexeme_as_string)
-        g.defined_identifiers[g.ident.name] = g.ident.value
-        g.defined_ident_names.append(g.ident.name)
-        g.identifier_names.add(g.ident.name)
+        g.ident = Ident(lexeme_as_string)
+        # g.identifiers.add(g.ident)
         lexical()
         if g.next_token == ASSIGN_OP:
             lexical()
@@ -77,11 +81,11 @@ def statement():
         print("Error")
     
     print(f"ID: {g.ident_num}; CONST: {g.const_num}; OP: {g.op_num};")
-    if g.should_be_calculated:
-        g.ident.value = evaluate(g.refined_expression)
-        # user["name"] = "사용자"
-        g.valid_identifiers[g.ident.name] = g.ident.value
-        print(">>>>>>>g.valid_identifiers",g.valid_identifiers)
+    if g.should_be_calculated: # 정의되지 않은 변수가 없어서 계산이 가능할 때 
+        g.ident.value = evaluate(g.refined_expression) # 우변 계산하고 대입
+        g.ident.is_defined = True # 정의된 변수임을 저장. 
+    
+    g.identifiers.add(g.ident) # 정의된 변수든 아니든 모든 ident 모아두기. 
     
     if g.warning:
         print(g.warning)
@@ -104,16 +108,19 @@ def statements():
         lexical()
         statement()
     print("Result ==>",end="")
-    for ident in g.identifier_names:
-        if ident in g.valid_identifiers:
-            valid_ident_value = g.valid_identifiers[ident]
-            print(f" {ident}: {valid_ident_value};", end="")
+    # for ident in g.identifier_names:
+    #     if ident in g.valid_identifiers:
+            # valid_ident_value = g.valid_identifiers[ident]
+            # print(f" {ident}: {valid_ident_value};", end="")
             # if ident == valid_ident.name:
             #     print(f" {ident}: {valid_ident.value};", end="")
             # else:
             #     print(f" {ident}: Unknown;", end="")
-        else:
-            print(f" {ident}: Unknown;", end="")
+        # else:
+        #     print(f" {ident}: Unknown;", end="")
+    for ident in g.identifiers:
+        print(f" {ident.name}: {ident.value};", end="")
+
     print("")
 
 def program():

@@ -11,6 +11,7 @@ op_num = 0
 
 temp = None
 ident = None
+identifiers = set()
 valid_identifiers = {}
 defined_identifiers = {}
 defined_ident_names = []
