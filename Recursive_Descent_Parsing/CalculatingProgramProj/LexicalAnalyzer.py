@@ -65,7 +65,6 @@ def lookup(character):
         g.next_token = SEMI_COLON
         
     else:
-        print(">>>>ELSE",character)
         add_char()
         g.next_token = "\0"
 
@@ -102,6 +101,3 @@ def lexical():
     else :
         g.next_token = EOF
         g.lexeme = "EOF"
-    
-    lexeme_as_string = ''.join(g.lexeme)
-    print("Next token is", g.next_token, "Next lexeme is", lexeme_as_string )

@@ -29,21 +29,13 @@ def evaluate(text):
     if len(text) == 1:
         return text[0]
     text = infixToPostfix(text)
-    print(text)
     s = list()
     
     for symbol in text:
-        # if symbol.isdecimal():
-        #     s.append(int(symbol))
-        # if symbol.type == Ident:
-        #     s.append(int(symbol.value))
-        
         if isinstance(symbol, Ident):
-            print(symbol.name)
             s.append(int(symbol.value))
         elif symbol.isdecimal():
             s.append(int(symbol))
-        # elif not s.is_empty():
         elif len(s) != 0:
             plus = None
             if symbol == "+":
@@ -57,9 +49,7 @@ def evaluate(text):
             else:
                 pass
             if plus is not None:
-                print(">>>>>>>",symbol)
                 s.append(plus)
         else:
             raise Exception("unknown value %s"%symbol)
     return s.pop()
-    # return 50

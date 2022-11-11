@@ -3,10 +3,13 @@ import global_variables as g
 from LexicalAnalyzer import *
 from calculating import *
 
+def update_refined_expression():
+    lexeme_as_string = ''.join(g.lexeme)
+    g.refined_expression.append(lexeme_as_string)
+
 def factortail():
     while g.next_token == MULT_OP:
-        lexeme_as_string = ''.join(g.lexeme)
-        g.refined_expression.append(lexeme_as_string)
+        update_refined_expression()
         lexical()
         factor()
 
@@ -21,25 +24,20 @@ def factor():
             if lexeme_as_string not in all_ident_names:
                 ident = Ident(lexeme_as_string)
                 g.identifiers.add(ident)
-
         else:
             ident = [ ident for ident in g.identifiers if ident.name == lexeme_as_string ]
-            # 이름이 lexeme_as_string인 g.identifiers에 있는 ident 객체 가져오고 
-            g.refined_expression.append(ident[0]) # 그 객체를 넣기  
+            g.refined_expression.append(ident[0]) 
         lexical()
     elif g.next_token == CONST:
-        lexeme_as_string = ''.join(g.lexeme)
-        g.refined_expression.append(lexeme_as_string)
+        update_refined_expression()
         lexical()
     elif g.next_token == LEFT_PAREN:
-        lexeme_as_string = ''.join(g.lexeme)
-        g.refined_expression.append(lexeme_as_string)
+        update_refined_expression()
         lexical()
         expression()
         
         if g.next_token == RIGHT_PAREN:
-            lexeme_as_string = ''.join(g.lexeme)
-            g.refined_expression.append(lexeme_as_string)
+            update_refined_expression()
             lexical()
         else:
             print("Error")
@@ -52,8 +50,7 @@ def factor():
 
 def termtail():
     while g.next_token == ADD_OP:
-        lexeme_as_string = ''.join(g.lexeme)
-        g.refined_expression.append(lexeme_as_string)
+        update_refined_expression()
         lexical()
         term()
 
@@ -64,13 +61,11 @@ def term():
 def expression():
     term()
     termtail()
-    print(g.refined_expression)
 
 def statement():
     if g.next_token == IDENT:
         lexeme_as_string = ''.join(g.lexeme)
         g.ident = Ident(lexeme_as_string)
-        # g.identifiers.add(g.ident)
         lexical()
         if g.next_token == ASSIGN_OP:
             lexical()
@@ -108,16 +103,6 @@ def statements():
         lexical()
         statement()
     print("Result ==>",end="")
-    # for ident in g.identifier_names:
-    #     if ident in g.valid_identifiers:
-            # valid_ident_value = g.valid_identifiers[ident]
-            # print(f" {ident}: {valid_ident_value};", end="")
-            # if ident == valid_ident.name:
-            #     print(f" {ident}: {valid_ident.value};", end="")
-            # else:
-            #     print(f" {ident}: Unknown;", end="")
-        # else:
-        #     print(f" {ident}: Unknown;", end="")
     for ident in g.identifiers:
         print(f" {ident.name}: {ident.value};", end="")
 
