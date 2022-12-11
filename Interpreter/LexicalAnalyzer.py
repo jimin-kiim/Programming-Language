@@ -64,7 +64,8 @@ class LexicalAnalyzer:
         g.lexeme = []
         self.get_non_blank()
 
-        if LexicalAnalyzer.char_class == LETTER: # lexeme이 LETTER로 시작한다면 
+        # identifiers and reserved words
+        if LexicalAnalyzer.char_class == LETTER: # when the lexeme starts with Letter
             self.add_char()
             self.get_char()
             while LexicalAnalyzer.char_class == LETTER or LexicalAnalyzer.char_class == DIGIT : # LETTER나 DIGIT로 이루어진 부분까지 
@@ -75,11 +76,21 @@ class LexicalAnalyzer:
                 g.next_token = VARIABLE
             elif g.token_string == 'call':
                 g.next_token = CALL
-            elif g.token_string == 'print_ari':
-                g.next_token = PRINT_ARI
+            elif g.token_string == 'print':
+                self.lookup(LexicalAnalyzer.next_char)
+                # self.get_char()
+                if g.next_token == UNDER_SCORE:
+                    self.get_char()
+                    while LexicalAnalyzer.char_class == LETTER or LexicalAnalyzer.char_class == DIGIT:
+                        self.add_char()
+                        self.get_char()
+                    g.token_string = ''.join(g.lexeme)
+                    if g.token_string == 'print_ari' :
+                        g.next_token = PRINT_ARI
             else: 
-                g.next_token = IDENT # 하나의 lexeme으로 인식 후 이의 타입이 Identifier 임을 저장. 
-        # 변수, 상수 외의 lexeme 처리
+                g.next_token = IDENT  
+        
+        # curly braces, semi colon, comma
         elif LexicalAnalyzer.char_class == UNKNOWN: 
             self.lookup(LexicalAnalyzer.next_char)
             self.get_char()

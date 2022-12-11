@@ -83,7 +83,7 @@ class ParsingProgram:
         print("Enter <function_body>")
         if g.next_token == VARIABLE:
             self.var_definitions()
-            self.lexical_analyzer.lexical()
+            # self.lexical_analyzer.lexical()
             self.statements()
         elif g.next_token == CALL or g.next_token == PRINT_ARI or g.next_token == IDENT:
             # self.lexical_analyzer.lexical()
@@ -102,19 +102,19 @@ class ParsingProgram:
                 if g.next_token == RIGHT_BRACE:
                     self.lexical_analyzer.lexical()
                 else:
-                    print("Error")
+                    print("Error - not RIGHT_BRACE")
             else:
-                print("Error")
+                print("Error - not LEFT_BRACE")
         else:
-            print("Error")
+            print("Error - not IDENT")
         print("Exit <function>")
 
     def functions(self):
         print("Enter <functions>")
         self.function()
 
-        while g.next_token != EOF:
-            self.lexical_analyzer.lexical()
+        while g.next_token == IDENT:
+            # self.lexical_analyzer.lexical()
             self.function()
         print("Exit <functions>")
 
