@@ -1,5 +1,5 @@
 input = ""
-next_token = ""
+next_token = 0
 lexeme = []
 token_string = ""
 
