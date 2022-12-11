@@ -40,35 +40,6 @@ class LexicalAnalyzer:
             g.next_token = RIGHT_BRACE
             g.token_string = ''.join(g.lexeme)
 
-        # elif character == "+":
-        #     self.add_char()
-        #     g.next_token = ADD_OP
-        #     g.token_string = ''.join(g.lexeme)
-        #     g.op_num += 1
-
-        # elif character == "-":
-        #     self.add_char()
-        #     g.next_token = SUB_OP
-        #     g.token_string = ''.join(g.lexeme)
-        #     g.op_num += 1
-
-        # elif character == "*":
-        #     self.add_char()
-        #     g.next_token = MULT_OP
-        #     g.token_string = ''.join(g.lexeme)
-        #     g.op_num += 1
-
-        # elif character == "/":
-        #     self.add_char()
-        #     g.next_token = DIV_OP
-        #     g.token_string = ''.join(g.lexeme)
-        #     g.op_num += 1
-
-        # elif character == ":":
-        #     self.add_char()
-        #     g.next_token = ASSIGN_OP
-        #     g.token_string = ''.join(g.lexeme)
-
         elif character == "_":
             self.add_char()
             g.next_token = UNDER_SCORE
@@ -96,7 +67,7 @@ class LexicalAnalyzer:
         if LexicalAnalyzer.char_class == LETTER: # lexeme이 LETTER로 시작한다면 
             self.add_char()
             self.get_char()
-            while LexicalAnalyzer.char_class == LETTER or LexicalAnalyzer.char_class == DIGIT or LexicalAnalyzer.char_class == UNKNOWN: # LETTER나 DIGIT로 이루어진 부분까지 
+            while LexicalAnalyzer.char_class == LETTER or LexicalAnalyzer.char_class == DIGIT : # LETTER나 DIGIT로 이루어진 부분까지 
                 self.add_char()
                 self.get_char()
             g.token_string = ''.join(g.lexeme)
@@ -112,10 +83,11 @@ class LexicalAnalyzer:
         elif LexicalAnalyzer.char_class == UNKNOWN: 
             self.lookup(LexicalAnalyzer.next_char)
             self.get_char()
-        #     self.get_non_blank()
-        #     if LexicalAnalyzer.char_class == UNKNOWN and g.next_token == ASSIGN_OP:
-        #         self.lookup(LexicalAnalyzer.next_char)
-        #         self.get_char()
+            # self.get_non_blank()
+            # if LexicalAnalyzer.char_class == UNKNOWN and g.next_token == ASSIGN_OP:
+            #     self.lookup(LexicalAnalyzer.next_char)
+            #     self.get_char()
+                
         else :
             g.next_token = EOF
             g.lexeme = EOF
@@ -123,3 +95,6 @@ class LexicalAnalyzer:
         print_lexeme = ''.join(g.lexeme)
         print("Next token is", g.next_token, "Next lexeme is", print_lexeme )
         # return next_token
+
+
+            # or (LexicalAnalyzer.char_class == UNKNOWN and ) 
