@@ -13,7 +13,7 @@ def main():
     
     lexical_analyzer.get_char()
     lexical_analyzer.lexical()
-    parser.program()
+    parser.start()
     while(g.next_token!=EOF):
         lexical_analyzer.lexical()
 

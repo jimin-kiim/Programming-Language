@@ -108,23 +108,10 @@ class LexicalAnalyzer:
                 g.next_token = PRINT_ARI
             else: 
                 g.next_token = IDENT # 하나의 lexeme으로 인식 후 이의 타입이 Identifier 임을 저장. 
-            # g.token_string = ''.join(g.lexeme)
-            # g.ident_num += 1
-        
-        # elif LexicalAnalyzer.char_class == DIGIT: # 숫자로 시작한다면 
-        #     self.add_char()
-        #     self.get_char()
-        #     while LexicalAnalyzer.char_class == DIGIT: # 수가 끝날 때까지
-        #         self.add_char()
-        #         self.get_char()
-        #     g.next_token = CONST # 하나의 lexeme으로 인식 후 Constant임을 저장.
-        #     g.token_string = ''.join(g.lexeme)
-        #     g.const_num += 1
-
         # 변수, 상수 외의 lexeme 처리
-        # elif LexicalAnalyzer.char_class == UNKNOWN: 
-        #     self.lookup(LexicalAnalyzer.next_char)
-        #     self.get_char()
+        elif LexicalAnalyzer.char_class == UNKNOWN: 
+            self.lookup(LexicalAnalyzer.next_char)
+            self.get_char()
         #     self.get_non_blank()
         #     if LexicalAnalyzer.char_class == UNKNOWN and g.next_token == ASSIGN_OP:
         #         self.lookup(LexicalAnalyzer.next_char)
@@ -133,3 +120,6 @@ class LexicalAnalyzer:
             g.next_token = EOF
             g.lexeme = EOF
             g.token_string = EOF
+        print_lexeme = ''.join(g.lexeme)
+        print("Next token is", g.next_token, "Next lexeme is", print_lexeme )
+        # return next_token
