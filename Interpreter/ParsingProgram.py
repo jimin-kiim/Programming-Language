@@ -4,14 +4,15 @@ from LexicalAnalyzer import *
 
 class ParsingProgram:
     def __init__(self):
-        self.ident = None
-        self.identifiers = []
+        # self.ident = None
+        # self.identifiers = []
 
-        self.warning = None
-        self.error = None
-        self.should_be_calculated = True
-        self.refined_expression = []
-        self.statement_to_be_printed = []
+        # self.warning = None
+        # self.error = None
+        # self.should_be_calculated = True
+        # self.refined_expression = []
+        # self.statement_to_be_printed = []
+        self.function_names = []
 
         self.lexical_analyzer = LexicalAnalyzer()
 
@@ -83,10 +84,8 @@ class ParsingProgram:
         print("Enter <function_body>")
         if g.next_token == VARIABLE:
             self.var_definitions()
-            # self.lexical_analyzer.lexical()
             self.statements()
         elif g.next_token == CALL or g.next_token == PRINT_ARI or g.next_token == IDENT:
-            # self.lexical_analyzer.lexical()
             self.statements()
         else:
             print("Error")
@@ -95,6 +94,8 @@ class ParsingProgram:
     def function(self):
         print("Enter <function>")
         if g.next_token == IDENT:
+            # print("!!!!!!!!!!",g.token_string)
+            self.function_names.append(g.token_string)
             self.lexical_analyzer.lexical()
             if g.next_token == LEFT_BRACE:
                 self.lexical_analyzer.lexical()
@@ -114,11 +115,13 @@ class ParsingProgram:
         self.function()
 
         while g.next_token == IDENT:
-            # self.lexical_analyzer.lexical()
             self.function()
         print("Exit <functions>")
 
     def start(self):
         print("Enter <start>")
         self.functions()
+        # print(self.function_names)
+        if "main" not in self.function_names:
+            print("No starting function.")
         print("Exit <start>")
