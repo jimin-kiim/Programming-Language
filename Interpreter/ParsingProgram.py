@@ -13,6 +13,7 @@ class ParsingProgram:
         # self.refined_expression = []
         # self.statement_to_be_printed = []
         self.function_names = []
+        self.local_variables = []
 
         self.lexical_analyzer = LexicalAnalyzer()
 
@@ -47,10 +48,20 @@ class ParsingProgram:
         
     def var_list(self):
         print("Enter <var_list>")
+        # print("!!!!!!",g.token_string)
+        if g.token_string in self.local_variables:
+            print("Duplicate declaration of the identifier:",g.token_string)
+        else:
+            self.local_variables.append(g.token_string)
         if g.next_token == IDENT:
             self.lexical_analyzer.lexical()
             while g.next_token == COMMA:
                 self.lexical_analyzer.lexical()
+                # print("!!!!!!!!!",g.token_string)
+                if g.token_string in self.local_variables:
+                    print("Duplicate declaration of the identifier:",g.token_string)
+                else:
+                    self.local_variables.append(g.token_string)
                 if g.next_token == IDENT:
                     self.lexical_analyzer.lexical()
                 else:
@@ -82,6 +93,7 @@ class ParsingProgram:
 
     def function_body(self):
         print("Enter <function_body>")
+        self.local_variables = []
         if g.next_token == VARIABLE:
             self.var_definitions()
             self.statements()
@@ -89,6 +101,7 @@ class ParsingProgram:
             self.statements()
         else:
             print("Error")
+        print("LOCAL_VARIABLES", self.local_variables)
         print("Exit <function_body>")
 
     def function(self):
