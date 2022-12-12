@@ -27,17 +27,21 @@ class ParsingProgram:
                 if g.next_token == SEMI_COLON:
                     self.lexical_analyzer.lexical()
                 else:
-                    print("Error")
+                    print("\"Syntax Error.\"")
+                    exit()
             else:
-                print("Error")
+                print("\"Syntax Error.\"")
+                exit()
         elif g.next_token == PRINT_ARI or  g.next_token == IDENT:
             self.lexical_analyzer.lexical()
             if g.next_token == SEMI_COLON:
                 self.lexical_analyzer.lexical()
             else:
-                print("Error")
+                print("\"Syntax Error.\"")
+                exit()
         else:
-            print("Error")
+            print("\"Syntax Error.\"")
+            exit()
         print("Exit <statement>")
 
     def statements(self):
@@ -50,7 +54,7 @@ class ParsingProgram:
         print("Enter <var_list>")
         # print("!!!!!!",g.token_string)
         if g.token_string in self.local_variables:
-            print("Duplicate declaration of the identifier:",g.token_string)
+            print("\"Duplicate declaration of the identifier:",g.token_string+"\"")
         else:
             self.local_variables.append(g.token_string)
         if g.next_token == IDENT:
@@ -59,15 +63,17 @@ class ParsingProgram:
                 self.lexical_analyzer.lexical()
                 # print("!!!!!!!!!",g.token_string)
                 if g.token_string in self.local_variables:
-                    print("Duplicate declaration of the identifier:",g.token_string)
+                    print("\"Duplicate declaration of the identifier:",g.token_string+"\"")
                 else:
                     self.local_variables.append(g.token_string)
                 if g.next_token == IDENT:
                     self.lexical_analyzer.lexical()
                 else:
-                    print("Error")
+                    print("\"Syntax Error.\"")
+                    exit()
         else:
-            print("Error")
+            print("\"Syntax Error.\"")
+            exit()
         print("Exit <var_list>")
 
     def var_definition(self):
@@ -78,9 +84,11 @@ class ParsingProgram:
             if g.next_token == SEMI_COLON:
                 self.lexical_analyzer.lexical()
             else:
-                print("Error")
+                print("\"Syntax Error.\"")
+                exit()
         else:
-            print("Error")
+            print("\"Syntax Error.\"")
+            exit()
         print("Exit <var_definition>")
 
     def var_definitions(self):
@@ -100,7 +108,8 @@ class ParsingProgram:
         elif g.next_token == CALL or g.next_token == PRINT_ARI or g.next_token == IDENT:
             self.statements()
         else:
-            print("Error")
+            print("\"Syntax Error.\"")
+            exit()
         print("LOCAL_VARIABLES", self.local_variables)
         print("Exit <function_body>")
 
@@ -119,11 +128,14 @@ class ParsingProgram:
                 if g.next_token == RIGHT_BRACE:
                     self.lexical_analyzer.lexical()
                 else:
-                    print("Error - not RIGHT_BRACE")
+                    print("\"Syntax Error.\"")
+                    exit()
             else:
-                print("Error - not LEFT_BRACE")
+                print("\"Syntax Error.\"")
+                exit()
         else:
-            print("Error - not IDENT")
+            print("\"Syntax Error.\"")
+            exit()
         print("Exit <function>")
 
     def functions(self):
@@ -132,6 +144,9 @@ class ParsingProgram:
 
         while g.next_token == IDENT:
             self.function()
+        if g.next_token != EOF:
+            print("\"Syntax Error.\"")
+            exit()
         print("Exit <functions>")
 
     def start(self):
@@ -140,4 +155,6 @@ class ParsingProgram:
         # print(self.function_names)
         if "main" not in self.function_names:
             print("No starting function.")
+        else:
+            print("\"Syntax O.K.\"")
         print("Exit <start>")
