@@ -95,6 +95,9 @@ class ParsingProgram:
         print("Enter <function>")
         if g.next_token == IDENT:
             # print("!!!!!!!!!!",g.token_string)
+            if g.token_string in self.function_names:
+                print("\"Duplicate declaration of the function name:",g.token_string+"\"")
+                exit()
             self.function_names.append(g.token_string)
             self.lexical_analyzer.lexical()
             if g.next_token == LEFT_BRACE:
