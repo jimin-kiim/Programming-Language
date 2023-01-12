@@ -42,6 +42,12 @@ formal languages, automata, concepts of programming languages
 - [Expressions, Assignment Statements](https://github.com/jimin-kiim/Programming-Language/issues/14#issue-1501375456)
 - Statement level control structures
 - [Subprograms](https://github.com/jimin-kiim/Programming-Language/issues/16#issue-1501843002)
+  - Parameters
+  - Local Referencing Environments
+  - Semantic Models of Parameter Passing
+  - Overloaded Subprograms, Generic Subprograms
+  - Closures
+  - Coroutines (symmetric control)
 - Implementing Subprograms
 <br>
 <br>
