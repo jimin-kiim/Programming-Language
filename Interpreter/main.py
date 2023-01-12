@@ -3,6 +3,7 @@ import global_variables as g
 from FileProcesor import *
 from LexicalAnalyzer import *
 from ParsingProgram import *
+from ExecutingProgram import *
 
 def main():
     file_processor = FileProcesor()
@@ -14,6 +15,15 @@ def main():
     lexical_analyzer.get_char()
     lexical_analyzer.lexical()
     parser.start()
+    while(g.next_token!=EOF):
+        lexical_analyzer.lexical()
+
+    LexicalAnalyzer.index = 0
+    executer = ExecutingProgram()
+    g.input = file_processor.read_file()
+    lexical_analyzer.get_char()
+    lexical_analyzer.lexical()
+    executer.start()
     while(g.next_token!=EOF):
         lexical_analyzer.lexical()
 

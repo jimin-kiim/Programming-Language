@@ -1,6 +1,5 @@
 from constants import *
 import global_variables as g
-from Ident import *
 
 class LexicalAnalyzer:
     char_class = 0
@@ -78,7 +77,6 @@ class LexicalAnalyzer:
                 g.next_token = CALL
             elif g.token_string == 'print':
                 self.lookup(LexicalAnalyzer.next_char)
-                # self.get_char()
                 if g.next_token == UNDER_SCORE:
                     self.get_char()
                     while LexicalAnalyzer.char_class == LETTER or LexicalAnalyzer.char_class == DIGIT:
@@ -94,18 +92,10 @@ class LexicalAnalyzer:
         elif LexicalAnalyzer.char_class == UNKNOWN: 
             self.lookup(LexicalAnalyzer.next_char)
             self.get_char()
-            # self.get_non_blank()
-            # if LexicalAnalyzer.char_class == UNKNOWN and g.next_token == ASSIGN_OP:
-            #     self.lookup(LexicalAnalyzer.next_char)
-            #     self.get_char()
                 
         else :
             g.next_token = EOF
             g.lexeme = EOF
             g.token_string = EOF
         print_lexeme = ''.join(g.lexeme)
-        print("Next token is", g.next_token, "Next lexeme is", print_lexeme )
-        # return next_token
-
-
-            # or (LexicalAnalyzer.char_class == UNKNOWN and ) 
+        # print("Next token is", g.next_token, "Next lexeme is", print_lexeme )

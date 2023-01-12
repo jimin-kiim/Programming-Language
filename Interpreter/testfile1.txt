@@ -6,7 +6,8 @@ p;
 second {
 variable x, a;
 b; print_ari; q;
-} main {
+} 
+main {
 variable p, q;
 call first; 
 }
