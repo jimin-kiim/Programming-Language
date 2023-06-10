@@ -1,1 +1,1 @@
-vtype id assign num addsub num semi
+vtype id assign num addsub num num semi
