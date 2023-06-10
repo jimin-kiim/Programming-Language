@@ -1,4 +1,5 @@
 grammar = [
+    ['START', 'CODE'],
     ['CODE' , 'VDECL CODE'],
     ['CODE' , 'CDECL CODE'],
     ['CODE' , 'FDECL CODE'],
