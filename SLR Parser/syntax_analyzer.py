@@ -7,7 +7,6 @@ def read_file():
     with open(input_file,'r') as filereader:
         for row in filereader:
             string += row
-    
     return string 
 
 def main():

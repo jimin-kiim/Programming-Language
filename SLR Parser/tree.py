@@ -16,7 +16,6 @@ def create_tree(root):
     else:
         node = Node(root)
         for child in root.children:
-            new_node = Node(child.name, parent = node)
             create_tree(child)
         exporter = UniqueDotExporter(root)
         exporter.to_dotfile("tree.dot")
