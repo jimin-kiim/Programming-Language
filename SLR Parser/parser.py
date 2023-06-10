@@ -10,7 +10,6 @@ def parse(input):
     stack = []
     symbol_index = 0
     stack.append(state)
-    parse_tree = []
     nodes = []
     while(1) :
         # print("state",state)
@@ -22,7 +21,7 @@ def parse(input):
         if cell_value == 'acc':
             print("accept")
             # tree = Tree()
-
+            create_tree(nodes[0])
             # exporter = UniqueDotExporter(root)
             # exporter.to_picture("parsetree.png")
             break
@@ -51,5 +50,5 @@ def parse(input):
             # for child_data in children_data:
                 # parent.add_child_node(Node(child_data))
             nodes.append(parent)
-            print(parent.data)
+            print(parent.name)
             # print("STACK 2", stack)
