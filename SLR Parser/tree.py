@@ -14,7 +14,7 @@ def create_tree(root):
     if root.children == []:
         return
     else:
-        node = Node(root)
+        root.children.reverse()
         for child in root.children:
             create_tree(child)
         exporter = UniqueDotExporter(root)
